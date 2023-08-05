@@ -1,20 +1,20 @@
 const db = require("../../config/db")
 
 class LocationRepository {
-    async createLocation (name, map_coordinates) {
+    async createLocation (country, city, name, map_coordinates) {
         const [location] = await db.execute(
             `
-            INSERT INTO locations (name, map_coordinates) 
-            VALUES (?, ?)
-            `, [name, map_coordinates]
+            INSERT INTO locations (country, city, name, map_coordinates) 
+            VALUES (?, ?, ?, ?)
+            `, [country, city, name, map_coordinates]
         );
 
-        const createdLocation = await this.findLocationById(location.insertId)
+        const createdLocation = await this.findById(location.insertId)
     
         return createdLocation; 
     }
 
-    async findLocationById (locationId) {
+    async findById (locationId) {
         const [location] = await db.execute(`
             SELECT * FROM locations WHERE id = ?;`, 
             [locationId]
@@ -23,7 +23,7 @@ class LocationRepository {
         return location; 
     }
 
-    async findLocationByName (locationName) {
+    async findByName (locationName) {
         const [location] = await db.execute(`
             SELECT * FROM locations 
             WHERE LOWER(name) LIKE LOWER('%${locationName}%')`
@@ -32,7 +32,7 @@ class LocationRepository {
         return location; 
     }
 
-    async findLocations () {
+    async findAll () {
         const [locations] = await db.execute(`
             SELECT * FROM locations
             `

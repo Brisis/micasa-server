@@ -9,6 +9,13 @@ const authenticationRouter = require("./services/authentication/authentication_r
 const userRouter = require("./services/user/user_routes");
 const locationRouter = require("./services/location/location_routes");
 const propertyRouter = require("./services/property/property_routes");
+const rentalRouter = require("./services/rentals/rental_routes");
+const billingRouter = require("./services/billing/billing_routes");
+const galleryRouter = require("./services/gallery/gallery_routes");
+const reviewRouter = require("./services/review/review_routes");
+const favouriteRouter = require("./services/favourite/favourite_routes");
+const historyRouter = require("./services/history/history_routes");
+const leaseRouter = require("./services/lease/lease_routes");
 
 const app = express();
 
@@ -35,6 +42,26 @@ app.use("/locations", locationRouter);
 //property
 app.use("/properties", propertyRouter);
 
+//lease
+app.use("/leases", leaseRouter);
+
+//history
+app.use("/history", historyRouter);
+
+//favourites
+app.use("/favourites", favouriteRouter);
+
+//reviews
+app.use("/reviews", reviewRouter);
+
+//gallery
+app.use("/gallery", galleryRouter);
+
+//billing
+app.use("/billing", billingRouter);
+
+//rentals
+app.use("/rentals", rentalRouter);
 
 /* Error handler middleware */
 // app.use(errorHandler);

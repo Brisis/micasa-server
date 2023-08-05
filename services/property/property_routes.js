@@ -4,12 +4,68 @@ let propertyService = new PropertyService();
 
 const propertyRouter = express.Router();
 
-propertyRouter.get("/", async (req, res, next) => {
+propertyRouter.post("/create", async (req, res, next) => {
     try {
-        res.status(200).send("response");
+        const response = await propertyService.registerProperty(req);
+
+        res.status(200).send(response);
     } catch (error) {
         next(error);
     }
 });
+
+propertyRouter.get("/", async (req, res, next) => {
+    try {
+        const response = await propertyService.getProperties();
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+propertyRouter.get("/:id", async (req, res, next) => {
+    try {
+        const response = await propertyService.getPropertyById(req);
+        
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+propertyRouter.post("/search", async (req, res, next) => {
+    try {
+        const response = await propertyService.getPropertyByName(req);
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+propertyRouter.get('/properties/:id/images', async (req, res, next) => {
+    try {
+        const id = req.params.id;
+
+        const response = await propertyService.getPropertyImages(id)
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+propertyRouter.get('/:id/set/:imageId', async (req, res, next) => {
+    try {
+        const propertyId = req.params.id 
+        const imageId = req.params.imageId
+    
+        const response = await propertyService.setCoverImage(propertyId, imageId)
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+
+
 
 module.exports = propertyRouter;
