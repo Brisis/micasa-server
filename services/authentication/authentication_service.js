@@ -26,7 +26,10 @@ class AuthenticationService {
 
         const user = await authRepository.createUser(email, hashedPassword)
 
-        return user[0];
+        return {
+            message: "created", 
+            user : user[0]
+        };
     }
 
     async login(req) {
@@ -46,9 +49,10 @@ class AuthenticationService {
             throw new Error("incorrect-email-or-password");
         }
 
-        const token = await utils.createAuthToken(dbUser[0])
+        const token = utils.createAuthToken(dbUser[0])
 
         return {
+            message: "logged in",
             token: token,
             user: dbUser[0]
         };
@@ -66,7 +70,7 @@ class AuthenticationService {
         }
 
 
-        const idFromAuthToken = await utils.validateAuthToken(reqToken);
+        const idFromAuthToken = utils.validateAuthToken(reqToken);
 
         const dbUser = await authRepository.getUserById(idFromAuthToken.id);
 
@@ -76,7 +80,10 @@ class AuthenticationService {
 
         // const token = await utils.createAuthToken(dbUser[0].id)
 
-        return dbUser[0];
+        return {
+            message: "authenticated",
+            user: dbUser[0]
+        };
     }
 
 }

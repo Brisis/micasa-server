@@ -57,6 +57,7 @@ class ErrorHandler {
     handlePropertyErrors (req) {
         const {
             locationId,
+            name,
             category,
             price,
             status,
@@ -67,6 +68,10 @@ class ErrorHandler {
 
         if (!locationId) {
             errors.push("Location ID is required");
+        }
+
+        if (!name) {
+            errors.push("Name is required");
         }
 
         if (!category) {

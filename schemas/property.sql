@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS properties (
     id integer PRIMARY KEY AUTO_INCREMENT,
     location_id INT NOT NULL,
     name VARCHAR(255) NOT NULL UNIQUE,
+    propertyID VARCHAR(50) NOT NULL UNIQUE,
     cover_image TEXT DEFAULT NULL,
     video VARCHAR(255) DEFAULT NULL,
     description TEXT NOT NULL,

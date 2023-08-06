@@ -20,6 +20,7 @@ class PropertyService {
 
         const {
             locationId,
+            name,
             description,
             amenities,
             category,
@@ -28,9 +29,9 @@ class PropertyService {
             purpose
         } = req.body;
 
-        let name = `Micasa - ${utils.generatePropertyID(10).toUpperCase()}`;
+        let propertyID = utils.generatePropertyID(10).toUpperCase();
 
-        const dbProperty = await propertyRepository.findByName(name);
+        const dbProperty = await propertyRepository.findByPropertyId(propertyID);
 
         if (dbProperty.length > 0) {
             throw new Error("property-already-registered");
@@ -44,6 +45,7 @@ class PropertyService {
 
         const property = await propertyRepository.createProperty(
             name,
+            propertyID,
             locationId,
             description == undefined ? `${category} for ${purpose} in ${dbLocation[0].name}` : description,
             amenities == undefined ? null : amenities,
@@ -82,7 +84,7 @@ class PropertyService {
     async getProperties () {
         const properties = await propertyRepository.findAll();
 
-        return properties;
+        return properties.reverse();
     }
 
     async getPropertyById (req) {

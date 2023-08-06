@@ -3,6 +3,7 @@ const db = require("../../config/db")
 class LocationRepository {
     async createProperty (
         name,
+        propertyID,
         locationId,
         description,
         amenities,
@@ -13,7 +14,9 @@ class LocationRepository {
         ) {
         const [property] = await db.execute(
             `
-            INSERT INTO properties (name,  
+            INSERT INTO properties (
+                name,  
+                propertyID,
                 location_id,
                 description,
                 amenities,
@@ -22,8 +25,8 @@ class LocationRepository {
                 status,
                 purpose
             ) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            `, [name, locationId, description, amenities, category, price, status, purpose]
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `, [name, propertyID, locationId, description, amenities, category, price, status, purpose]
         );
 
         const createdProperty = await this.findById(property.insertId)
@@ -53,10 +56,10 @@ class LocationRepository {
         return property; 
     }
 
-    async findByName (propertyName) {
+    async findByPropertyId (propertyID) {
         const [property] = await db.execute(`
             SELECT * FROM properties 
-            WHERE LOWER(name) LIKE LOWER('%${propertyName}%')`
+            WHERE LOWER(propertyID) LIKE LOWER('%${propertyID}%')`
         );
 
         return property; 

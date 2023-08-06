@@ -20,7 +20,7 @@ class Utils {
         return isValid;
     }
 
-    async createAuthToken (user) {
+    createAuthToken (user) {
         let generatedToken = jwt.sign(
             { id: user.id },
             TOKEN_SECRET,
@@ -30,7 +30,7 @@ class Utils {
         return generatedToken;
     }
 
-    async validateAuthToken (authorization) {
+    validateAuthToken (authorization) {
         const reqToken = authorization.split(" ")[1];
         const decodedToken = jwt.verify(reqToken, TOKEN_SECRET);
         return decodedToken;

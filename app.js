@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
+
 const errorHandler = require("./middleware/errorHandler");
 const authenticationRouter = require("./services/authentication/authentication_routes");
 const userRouter = require("./services/user/user_routes");
@@ -16,16 +17,21 @@ const reviewRouter = require("./services/review/review_routes");
 const favouriteRouter = require("./services/favourite/favourite_routes");
 const historyRouter = require("./services/history/history_routes");
 const leaseRouter = require("./services/lease/lease_routes");
+const morgan = require('morgan');
 
 const app = express();
+
+morgan('short');
 
 app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
 app.use(cors());
-app.use(express.static(path.join(__dirname, './uploads')));
+
+app.use("/uploads", express.static(path.join(__dirname, './uploads')));
 
 
 /* Routes */
@@ -63,12 +69,14 @@ app.use("/billing", billingRouter);
 //rentals
 app.use("/rentals", rentalRouter);
 
+//The 404 Route (ALWAYS Keep this as the last route)
+// app.use('*', (req, res) => {
+//     res.status(404).send("page-not-found");
+// });
+
 /* Error handler middleware */
 // app.use(errorHandler);
-app.use((err, req, res, next) => {
-    // console.error(err.stack)
-    res.status(500).send(err.message)
-});
+app.use(errorHandler);
 
 // Listen to port
 const PORT = process.env.PORT || 3000;
