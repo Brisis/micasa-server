@@ -5,6 +5,7 @@ class LocationRepository {
         name,
         propertyID,
         locationId,
+        location_name,
         description,
         amenities,
         category,
@@ -18,6 +19,7 @@ class LocationRepository {
                 name,  
                 propertyID,
                 location_id,
+                location_name,
                 description,
                 amenities,
                 category,
@@ -25,11 +27,12 @@ class LocationRepository {
                 status,
                 purpose
             ) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `, [name, propertyID, locationId, description, amenities, category, price, status, purpose]
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `, [name, propertyID, locationId, location_name, description, amenities, category, price, status, purpose]
         );
 
-        const createdProperty = await this.findById(property.insertId)
+        const createdProperty = await this.findById(property.insertId);
+
     
         return createdProperty; 
     }

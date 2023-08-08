@@ -1,31 +1,66 @@
 const ErrorHandler = require("../../utils/errorHandler");
 const BillingRepository = require("./billing_repository");
+const UserRepository = require("../user/user_repository");
 const Utils = require("../../utils/utils");
-
-
 
 let errorHandler = new ErrorHandler();
 let billingRepository = new BillingRepository();
+let userRepository = new UserRepository();
 let utils = new Utils();
 
 class BillingService {
 
     async registerBilling (req) {
-        const validateRequest = errorHandler.handleBillingErrors(req);
+        // const validateRequest = errorHandler.handleBillingErrors(req);
 
-        const {country, city, name, map_coordinates} = req.body;
+        const {balance, expireDate} = req.body;
+        let userId = req.params.userId;
 
-        const dbBilling = await billingRepository.findByName(name);
+        if (
+            balance == undefined || 
+            expireDate == undefined || 
+            userId == undefined
+        ) {
+            throw new Error("missing-fields-required");
+        }
 
-        if (dbBilling.length > 0) {
-            throw new Error("billing-already-registered");
+        const dbUser = await userRepository.findById(userId);
+
+        if (dbUser.length < 1) {
+            throw new Error("user-not-found");
+        }
+
+        const dbBilling = await billingRepository.findByUserId(userId);
+
+        if (dbBilling.length > 1) {
+            throw new Error("billing-already-registered"); 
         }
 
         const billing = await billingRepository.create(
-            country,
-            city,
-            name, 
-            map_coordinates == undefined ? null : map_coordinates
+            userId, 
+            balance, 
+            expireDate
+        );
+
+        return billing[0];
+    }
+
+    async updateBilling (req) {
+        const validateRequest = errorHandler.handleBillingUpdateErrors(req);
+
+        const {balance, expireDate} = req.body;
+        let leaseId = req.params.leaseId;
+
+        const dbBilling = await billingRepository.findById(leaseId);
+
+        if (dbBilling.length < 1) {
+            throw new Error("billing-not-found"); 
+        }
+
+        const billing = await billingRepository.update(
+            leaseId, 
+            balance, 
+            expireDate
         );
 
         return billing[0];
@@ -43,14 +78,14 @@ class BillingService {
         return billing[0];
     }
 
-    async getBillingByName (req) {
-        const billing = await billingRepository.findByName(req.body.name);
+    async getBillingByUserId (req) {
+        const billing = await billingRepository.findByUserId(req.params.userId);
 
         if (billing.length < 1) {
             throw new Error("billing-not-found");
         }
 
-        return billing;
+        return billing[0];
     }
 
 }

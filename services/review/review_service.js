@@ -2,8 +2,6 @@ const ErrorHandler = require("../../utils/errorHandler");
 const ReviewRepository = require("./review_repository");
 const Utils = require("../../utils/utils");
 
-
-
 let errorHandler = new ErrorHandler();
 let reviewRepository = new ReviewRepository();
 let utils = new Utils();

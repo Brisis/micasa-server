@@ -4,7 +4,17 @@ let billingService = new BillingService();
 
 const billingRouter = express.Router();
 
-billingRouter.post("/create", async (req, res, next) => {
+billingRouter.post("/create/:userId", async (req, res, next) => {
+    try {
+        const response = await billingService.registerBilling(req);
+
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+billingRouter.put("/:leaseId/update", async (req, res, next) => {
     try {
         const response = await billingService.registerBilling(req);
 
@@ -33,9 +43,10 @@ billingRouter.get("/:id", async (req, res, next) => {
     }
 });
 
-billingRouter.post("/search", async (req, res, next) => {
+billingRouter.get("/user/:userId", async (req, res, next) => {
     try {
-        const response = await billingService.getBillingByName(req);
+        const response = await billingService.getBillingByUserId(req);
+        
         res.status(200).send(response);
     } catch (error) {
         next(error);

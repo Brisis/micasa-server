@@ -65,6 +65,55 @@ class LeaseRepository {
         return createdLease; 
     }
 
+    async update (
+        leaseId,
+        occupation,
+        periodEmployedInMonths,
+        employerName,
+        salary,
+        businessAddress,
+        currentHomeAddress,
+        homePhoneNumber,
+        familySize,
+        nextOfKin,
+        nextOfKinPhoneNumber,
+        nextOfKinAddress
+        ) {
+        const [lease] = await db.execute(
+            `
+            UPDATE leases
+                SET occupation = ?, 
+                    periodEmployedInMonths = ?,
+                    employerName = ?,
+                    salary = ?,
+                    businessAddress = ?,
+                    currentHomeAddress = ?,
+                    homePhoneNumber = ?,
+                    familySize = ?,
+                    nextOfKin = ?,
+                    nextOfKinPhoneNumber = ?,
+                    nextOfKinAddress = ?
+                WHERE id = ${leaseId};
+            `, [
+                occupation,
+                periodEmployedInMonths,
+                employerName,
+                salary,
+                businessAddress,
+                currentHomeAddress,
+                homePhoneNumber,
+                familySize,
+                nextOfKin,
+                nextOfKinPhoneNumber,
+                nextOfKinAddress
+            ]
+        );
+
+        const updatedLease = await this.findById(leaseId)
+    
+        return updatedLease; 
+    }
+
     async findById (leaseId) {
         const [lease] = await db.execute(`
             SELECT * FROM leases WHERE id = ?;`, 
@@ -74,7 +123,7 @@ class LeaseRepository {
         return lease; 
     }
 
-    async findByUser (userId) {
+    async findByUserId (userId) {
         const [lease] = await db.execute(`
             SELECT * FROM leases 
             WHERE user_id = ?`,

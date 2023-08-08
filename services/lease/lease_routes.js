@@ -14,6 +14,16 @@ leaseRouter.post("/create", async (req, res, next) => {
     }
 });
 
+leaseRouter.put("/:leaseId/update", async (req, res, next) => {
+    try {
+        const response = await leaseService.updateLease(req);
+
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
 leaseRouter.get("/", async (req, res, next) => {
     try {
         const response = await leaseService.getLeases();
@@ -33,9 +43,9 @@ leaseRouter.get("/:id", async (req, res, next) => {
     }
 });
 
-leaseRouter.post("/search", async (req, res, next) => {
+leaseRouter.get("/user/:userId", async (req, res, next) => {
     try {
-        const response = await leaseService.getLeaseByName(req);
+        const response = await leaseService.getLeaseByUserId(req);
         res.status(200).send(response);
     } catch (error) {
         next(error);

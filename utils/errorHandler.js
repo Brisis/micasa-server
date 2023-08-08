@@ -187,6 +187,73 @@ class ErrorHandler {
         }
 
     }
+
+    handleLeaseUpdateErrors (req) {
+        const {
+            occupation,
+            periodEmployedInMonths,
+            employerName,
+            salary,
+            businessAddress,
+            currentHomeAddress,
+            homePhoneNumber,
+            familySize,
+            nextOfKin,
+            nextOfKinPhoneNumber,
+            nextOfKinAddress,
+        } = req.body;
+
+        let errors = [];
+
+        if (!occupation) {
+            errors.push("occupation is required");
+        }
+
+        if (!periodEmployedInMonths) {
+            errors.push("periodEmployedInMonths is required");
+        }
+
+        if (!employerName) {
+            errors.push("employerName is required");
+        }
+
+        if (!salary) {
+            errors.push("salary is required");
+        }
+
+        if (!businessAddress) {
+            errors.push("businessAddress is required");
+        }
+
+        if (!currentHomeAddress) {
+            errors.push("currentHomeAddress is required");
+        }
+
+        if (!homePhoneNumber) {
+            errors.push("home Phone Number is required");
+        }
+
+        if (!familySize) {
+            errors.push("familySize is required");
+        }
+
+        if (!nextOfKin) {
+            errors.push("nextOfKin is required");
+        }
+
+        if (!nextOfKinAddress) {
+            errors.push("nextOfKinAddress is required");
+        }
+
+        if (!nextOfKinPhoneNumber) {
+            errors.push("nextOfKinPhoneNumber is required");
+        }
+
+        if (errors.length > 0) {
+            throw new Error(errors);
+        }
+
+    }
 }
 
 module.exports = ErrorHandler;

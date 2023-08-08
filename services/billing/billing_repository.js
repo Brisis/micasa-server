@@ -1,17 +1,32 @@
 const db = require("../../config/db")
 
 class BillingRepository {
-    async create (country, city, name, map_coordinates) {
+    async create (userId, balance, expireDate) {
         const [billing] = await db.execute(
             `
-            INSERT INTO billing (country, city, name, map_coordinates) 
-            VALUES (?, ?, ?, ?)
-            `, [country, city, name, map_coordinates]
+            INSERT INTO billing (user_id, balance, expire_date) 
+            VALUES (?, ?, ?)
+            `, [userId, balance, expireDate]
         );
 
         const createdBilling = await this.findById(billing.insertId)
     
         return createdBilling; 
+    }
+
+    async update (leaseId, balance, expireDate) {
+        const [billing] = await db.execute(
+            `
+            UPDATE leases
+            SET balance = ?,
+                expire_date = ?
+            WHERE id = ${leaseId};
+            `, [balance, expireDate]
+        );
+
+        const updatedBilling = await this.findById(leaseId)
+    
+        return updatedBilling; 
     }
 
     async findById (billingId) {
@@ -23,10 +38,11 @@ class BillingRepository {
         return billing; 
     }
 
-    async findByName (billingName) {
+    async findByUserId (userId) {
         const [billing] = await db.execute(`
             SELECT * FROM billing 
-            WHERE LOWER(name) LIKE LOWER('%${billingName}%')`
+            WHERE user_id = ?`,
+            [userId]
         );
 
         return billing; 

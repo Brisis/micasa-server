@@ -43,10 +43,13 @@ class PropertyService {
             throw new Error("location-not-found");
         }
 
+        let location_name = `${dbLocation[0].name}, ${dbLocation[0].city}`;
+
         const property = await propertyRepository.createProperty(
             name,
             propertyID,
             locationId,
+            location_name,
             description == undefined ? `${category} for ${purpose} in ${dbLocation[0].name}` : description,
             amenities == undefined ? null : amenities,
             category,
