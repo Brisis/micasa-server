@@ -68,6 +68,25 @@ class LocationRepository {
         return property; 
     }
 
+    async findByLocation (location_id) {
+        const [properties] = await db.execute(`
+            SELECT * FROM properties 
+            WHERE location_id = ?
+            `, [location_id]
+        );
+
+        return properties; 
+    }
+
+    async findByName (query) {
+        const [properties] = await db.execute(`
+            SELECT * FROM properties 
+            WHERE LOWER(name) LIKE LOWER('%${query}%')`
+        );
+
+        return properties; 
+    }
+
     async findAll () {
         const [properties] = await db.execute(`
             SELECT * FROM properties

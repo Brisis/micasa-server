@@ -96,14 +96,27 @@ class PropertyService {
         return property[0];
     }
 
-    async getPropertyByName (req) {
-        const property = await propertyRepository.findByName(req.body.name);
+    async getPropertiesSearchResults (searchQuery) {
 
-        if (property.length < 1) {
-            throw new Error("property-not-found");
+        let query = searchQuery;
+        let location_id;
+
+        const dbLocation = await locationRepository.findByName(query);
+
+        if (dbLocation.length > 0) {
+           location_id = dbLocation[0].id;
         }
 
-        return property;
+        if (location_id != undefined) {
+            const properties = await propertyRepository.findByLocation(location_id);
+
+            return properties;
+        } else {
+            const properties = await propertyRepository.findByName(query);
+
+            return properties;
+        }
+        
     }
     
 }
