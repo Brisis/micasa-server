@@ -57,6 +57,21 @@ class GalleryService {
         return image;
     }
 
+    async getImagesByPropertyId (propertyId) {
+
+        const dbProperty = await propertyRepository.findById(propertyId);
+
+        if (dbProperty.length < 1) {
+            throw new Error("property-not-found");
+        }
+
+        const images = await galleryRepository.findByPropertyId(propertyId);
+
+        return images;
+    }
+
+    
+
 }
 
 module.exports = GalleryService;

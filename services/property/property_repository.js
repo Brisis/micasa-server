@@ -87,6 +87,15 @@ class LocationRepository {
         return properties; 
     }
 
+    async findByAmenities (filterType) {
+        const [properties] = await db.execute(`
+            SELECT * FROM properties 
+            WHERE LOWER(name) LIKE LOWER('%${filterType}%')`
+        );
+
+        return properties; 
+    } 
+
     async findAll () {
         const [properties] = await db.execute(`
             SELECT * FROM properties

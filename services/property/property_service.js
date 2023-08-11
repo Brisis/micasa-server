@@ -118,6 +118,14 @@ class PropertyService {
         }
         
     }
+
+    async getPropertiesFilterResults (filterType) {
+
+        const properties = await propertyRepository.findByAmenities(filterType);
+
+        return properties; 
+    }
+    
     
 }
 

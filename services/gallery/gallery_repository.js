@@ -23,13 +23,14 @@ class GalleryRepository {
         return image; 
     }
 
-    async findByName (imageName) {
-        const [image] = await db.execute(`
+    async findByPropertyId (propertyId) {
+        const [images] = await db.execute(`
             SELECT * FROM gallery 
-            WHERE LOWER(name) LIKE LOWER('%${imageName}%')`
+            WHERE property_id = ?
+            `, [propertyId]
         );
 
-        return image; 
+        return images; 
     }
 
     async findAll () {

@@ -18,9 +18,14 @@ propertyRouter.get("/", async (req, res, next) => {
     try {
 
         const searchQuery = req.query.searchQuery;
+        const filterType = req.query.filterType;
 
         if (searchQuery != undefined) {
             const response = await propertyService.getPropertiesSearchResults(searchQuery);
+
+            res.status(200).send(response);
+        } else if(filterType != undefined) {
+            const response = await propertyService.getPropertiesFilterResults(filterType);
 
             res.status(200).send(response);
         } else {

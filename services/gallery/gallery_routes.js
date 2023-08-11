@@ -36,9 +36,9 @@ galleryRouter.get("/:id", async (req, res, next) => {
     }
 });
 
-galleryRouter.post("/search", async (req, res, next) => {
+galleryRouter.get("/property/:propertyId", async (req, res, next) => {
     try {
-        const response = await galleryService.getImageByName(req);
+        const response = await galleryService.getImagesByPropertyId(req.params.propertyId);
         res.status(200).send(response);
     } catch (error) {
         next(error);
