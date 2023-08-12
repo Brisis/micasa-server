@@ -4,7 +4,7 @@ let favouriteService = new FavouriteService();
 
 const favouriteRouter = express.Router();
 
-favouriteRouter.post("/create", async (req, res, next) => {
+favouriteRouter.post("/create/property/:propertyId/user/:userId", async (req, res, next) => {
     try {
         const response = await favouriteService.registerFavourite(req);
 
@@ -33,9 +33,10 @@ favouriteRouter.get("/:id", async (req, res, next) => {
     }
 });
 
-favouriteRouter.post("/search", async (req, res, next) => {
+favouriteRouter.get("/user/:userId", async (req, res, next) => {
     try {
-        const response = await favouriteService.getFavouriteByName(req);
+        const response = await favouriteService.getFavouritesByUser(req.params.userId);
+        
         res.status(200).send(response);
     } catch (error) {
         next(error);

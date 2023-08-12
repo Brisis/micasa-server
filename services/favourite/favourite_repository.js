@@ -1,12 +1,12 @@
 const db = require("../../config/db")
 
 class FavouriteRepository {
-    async createFavourite (country, city, name, map_coordinates) {
+    async create (userId, propertyId) {
         const [favourite] = await db.execute(
             `
-            INSERT INTO favourites (country, city, name, map_coordinates) 
-            VALUES (?, ?, ?, ?)
-            `, [country, city, name, map_coordinates]
+            INSERT INTO favourites (user_id, property_id) 
+            VALUES (?, ?)
+            `, [userId, propertyId]
         );
 
         const createdFavourite = await this.findById(favourite.insertId)
@@ -23,10 +23,28 @@ class FavouriteRepository {
         return favourite; 
     }
 
-    async findByName (favouriteName) {
+    async findByUserId (userId) {
+        const [favourites] = await db.execute(`
+            SELECT * FROM favourites WHERE user_id = ?;`, 
+            [userId]
+        );
+
+        return favourites; 
+    }
+
+    async delete (userId, propertyId) {
         const [favourite] = await db.execute(`
-            SELECT * FROM favourites 
-            WHERE LOWER(name) LIKE LOWER('%${favouriteName}%')`
+            DELETE FROM favourites WHERE user_id = ? AND property_id = ?;`, 
+            [userId, propertyId]
+        );
+
+        return favourite; 
+    }
+
+    async findByUserAndProperty (userId, propertyId) {
+        const [favourite] = await db.execute(`
+            SELECT * FROM favourites WHERE user_id = ? AND property_id = ?;`, 
+            [userId, propertyId]
         );
 
         return favourite; 
