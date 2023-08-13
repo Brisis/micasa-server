@@ -1,37 +1,57 @@
 const ErrorHandler = require("../../utils/errorHandler");
 const HistoryRepository = require("./history_repository");
+const UserRepository = require("../user/user_repository");
+const PropertyRepository = require("../property/property_repository");
 const Utils = require("../../utils/utils");
 
 
 
 let errorHandler = new ErrorHandler();
 let historyRepository = new HistoryRepository();
+let userRepository = new UserRepository();
+let propertyRepository = new PropertyRepository();
 let utils = new Utils();
 
 class HistoryService {
 
     async registerHistory (req) {
-        const validateRequest = errorHandler.handleHistoryErrors(req);
+        const {userId, propertyId} = req.params;
 
-        const {country, city, name, map_coordinates} = req.body;
-
-        const dbHistory = await historyRepository.findByName(name);
+        const dbHistory = await historyRepository.findByUserAndProperty(userId, propertyId);
 
         if (dbHistory.length > 0) {
-            throw new Error("history-already-registered");
+            return {message: "already added"};
         }
 
-        const history = await historyRepository.create(
-            country,
-            city,
-            name, 
-            map_coordinates == undefined ? null : map_coordinates
+        const dbUser = await userRepository.findById(userId);
+
+        if (dbUser.length < 1) {
+            throw new Error("user-not-found");
+        }
+
+        const dbProperty = await propertyRepository.findById(propertyId);
+
+        if (dbProperty.length < 1) {
+            throw new Error("property-not-found");
+        }
+
+        await historyRepository.create(
+            userId,
+            propertyId
         );
 
-        return history[0];
+        return {message: "added"};
     }
 
-    async getHistories () {
+    async deleteHistory(req) {
+        const {userId, propertyId} = req.params;
+
+        await historyRepository.delete(userId, propertyId);
+
+        return {message: "deleted"};
+    }
+
+    async getHistory () {
         const history = await historyRepository.findAll();
 
         return history;
@@ -43,14 +63,26 @@ class HistoryService {
         return history[0];
     }
 
-    async getHistoryByName (req) {
-        const history = await historyRepository.findByName(req.body.name);
+    async getHistoryByUser (userId) {
+        const dbUser = await userRepository.findById(userId);
 
-        if (history.length < 1) {
-            throw new Error("history-not-found");
+        if (dbUser.length < 1) {
+            throw new Error("user-not-found");
         }
 
-        return history;
+        const history = await historyRepository.findByUserId(userId);
+
+        let userHistory = [];
+        history.forEach((fav) => userHistory.push(fav.property_id));
+
+        let historyProperties = [];
+        for (let i = 0; i < userHistory.length; i++) {
+            const dbProperty = await propertyRepository.findById(userHistory[i]);
+            historyProperties.push(dbProperty[0]);
+        }
+
+
+        return historyProperties;
     }
 
 }

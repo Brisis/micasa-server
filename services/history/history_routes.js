@@ -4,9 +4,19 @@ let historyService = new HistoryService();
 
 const historyRouter = express.Router();
 
-historyRouter.post("/create", async (req, res, next) => {
+historyRouter.post("/create/property/:propertyId/user/:userId", async (req, res, next) => {
     try {
         const response = await historyService.registerHistory(req);
+
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+historyRouter.delete("/delete/property/:propertyId/user/:userId", async (req, res, next) => {
+    try {
+        const response = await historyService.deleteHistory(req);
 
         res.status(200).send(response);
     } catch (error) {
@@ -33,9 +43,10 @@ historyRouter.get("/:id", async (req, res, next) => {
     }
 });
 
-historyRouter.post("/search", async (req, res, next) => {
+historyRouter.get("/user/:userId", async (req, res, next) => {
     try {
-        const response = await historyService.getHistoryByName(req);
+        const response = await historyService.getHistoryByUser(req.params.userId);
+
         res.status(200).send(response);
     } catch (error) {
         next(error);

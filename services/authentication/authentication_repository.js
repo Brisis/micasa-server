@@ -5,8 +5,8 @@ class AuthenticationRepository {
     async createUser (email, hashedPassword) {
         const [user] = await db.execute(
             `
-            INSERT INTO users (email, password) 
-            VALUES (?, ?)
+            INSERT INTO users (email, password, location_id) 
+            VALUES (?, ?, 1)
             `, [email, hashedPassword]
         );
 

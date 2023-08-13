@@ -1,12 +1,12 @@
 const db = require("../../config/db")
 
 class HistoryRepository {
-    async createHistory (country, city, name, map_coordinates) {
+    async create (user_id, property_id) {
         const [history] = await db.execute(
             `
-            INSERT INTO history (country, city, name, map_coordinates) 
-            VALUES (?, ?, ?, ?)
-            `, [country, city, name, map_coordinates]
+            INSERT INTO history (user_id, property_id) 
+            VALUES (?, ?)
+            `, [user_id, property_id]
         );
 
         const createdHistory = await this.findById(history.insertId)
@@ -23,13 +23,31 @@ class HistoryRepository {
         return history; 
     }
 
-    async findByName (historyName) {
-        const [history] = await db.execute(`
-            SELECT * FROM history 
-            WHERE LOWER(name) LIKE LOWER('%${historyName}%')`
+    async findByUserId (userId) {
+        const [favourites] = await db.execute(`
+            SELECT * FROM history WHERE user_id = ?;`, 
+            [userId]
         );
 
-        return history; 
+        return favourites; 
+    }
+
+    async delete (userId, propertyId) {
+        const [favourite] = await db.execute(`
+            DELETE FROM history WHERE user_id = ? AND property_id = ?;`, 
+            [userId, propertyId]
+        );
+
+        return favourite; 
+    }
+
+    async findByUserAndProperty (userId, propertyId) {
+        const [favourite] = await db.execute(`
+            SELECT * FROM history WHERE user_id = ? AND property_id = ?;`, 
+            [userId, propertyId]
+        );
+
+        return favourite; 
     }
 
     async findAll () {

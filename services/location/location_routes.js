@@ -42,4 +42,24 @@ locationRouter.post("/search", async (req, res, next) => {
     }
 });
 
+locationRouter.get("/user/:userId", async (req, res, next) => {
+    try {
+        const response = await locationService.getLocationByUser(req.params.userId);
+        
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+locationRouter.put("/:locationId/user/:userId", async (req, res, next) => {
+    try {
+        const response = await locationService.updateUserLocation(req);
+        
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = locationRouter;
