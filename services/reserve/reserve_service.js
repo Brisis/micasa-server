@@ -1,5 +1,6 @@
 const ErrorHandler = require("../../utils/errorHandler");
 const ReserveRepository = require("./reserve_repository");
+const BillingRepository = require("../billing/billing_repository");
 const UserRepository = require("../user/user_repository");
 const PropertyRepository = require("../property/property_repository");
 const Utils = require("../../utils/utils");
@@ -9,6 +10,7 @@ const Utils = require("../../utils/utils");
 let errorHandler = new ErrorHandler();
 let reserveRepository = new ReserveRepository();
 let userRepository = new UserRepository();
+let billingRepository = new BillingRepository();
 let propertyRepository = new PropertyRepository();
 let utils = new Utils();
 
@@ -68,8 +70,15 @@ class ReserveService {
         const dbReserve = await reserveRepository.findByPropertyAndUser(userId, propertyId);
         
         if (dbReserve.length > 0) {
-            return {message: "not allowed"};
+            return {message: "You are not allowed to reserve this property at this moment"};
         }
+
+        const dbBilling = await billingRepository.findByUserId(userId);
+
+        if (dbBilling.length < 1) {
+            return {message: "Please pay your Account to Continue"};
+        }
+
 
         return {message: "allowed"};
     }

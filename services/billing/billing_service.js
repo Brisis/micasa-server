@@ -32,7 +32,7 @@ class BillingService {
 
         const dbBilling = await billingRepository.findByUserId(userId);
 
-        if (dbBilling.length > 1) {
+        if (dbBilling.length > 0) {
             throw new Error("billing-already-registered"); 
         }
 
