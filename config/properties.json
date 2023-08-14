@@ -1,0 +1,96 @@
+// purpose - either => Sale or Rent
+// status - either => Available or Sold or Rented
+// category - either => House or Room or Space or Cottage
+// amenities - are comma seperated => "garden, 5 baths, fitted stove, tank, solar backup"
+[
+    {
+        "locationId": 2,
+        "name": "House for sale in Alexandra Park",
+        "category": "House",
+        "price": 210000,
+        "status": "Available",
+        "purpose": "Sale",
+        "amenities": "garden, 5 baths, fitted stove, tank, solar backup"
+    },
+    {
+        "locationId": 7,
+        "name": "House for rent in Avonlea",
+        "category": "House",
+        "price": 350,
+        "status": "Available",
+        "purpose": "Rent",
+        "amenities": "garden, 2 baths, fitted stove, tank, solar backup"
+    },
+    {
+        "locationId": 6,
+        "name": "A room for rent in Avondale",
+        "category": "Room",
+        "price": 170,
+        "status": "Available",
+        "purpose": "Rent",
+        "amenities": "tapped water, seperate bath"
+    },
+    {
+        "locationId": 11,
+        "name": "A room for rent in Budiriro",
+        "category": "Room",
+        "price": 45,
+        "status": "Available",
+        "purpose": "Rent",
+        "amenities": "gated, borehole"
+    },
+    {
+        "locationId": 9,
+        "name": "Garage space for rent in Belvedere",
+        "category": "Space",
+        "price": 700,
+        "status": "Available",
+        "purpose": "Rent",
+        "amenities": "concrete pavement, cameras, 24/7 security"
+    },
+    {
+        "locationId": 3,
+        "name": "2 bed cottage for rent in Arcadia",
+        "category": "Cottage",
+        "price": 350,
+        "status": "Available",
+        "purpose": "Rent",
+        "amenities": "borehole, own bath, own toilet, fitted stove, tank, solar backup, wifi"
+    },
+    {
+        "locationId": 10,
+        "name": "1 bed cottage for rent in Borrowdale",
+        "category": "Cottage",
+        "price": 220,
+        "status": "Available",
+        "purpose": "Rent",
+        "amenities": "bics, fitted stove, wifi, tank, solar backup"
+    },
+    {
+        "locationId": 9,
+        "name": "2 roomed cottage for rent in Belvedere",
+        "category": "Cottage",
+        "price": 120,
+        "status": "Available",
+        "purpose": "Rent",
+        "amenities": "borehole, shared bath, own toilet"
+    },
+    {
+        "locationId": 1,
+        "name": "Table to share in Town",
+        "category": "Space",
+        "price": 100,
+        "status": "Available",
+        "purpose": "Rent",
+        "amenities": "cameras, 24/7 security"
+    },
+    {
+        "locationId": 5,
+        "name": "Coffee shop to let in The Avenues",
+        "category": "Space",
+        "price": 1250,
+        "status": "Available",
+        "purpose": "Rent",
+        "amenities": "coffee equipment,2 toilets, 1 bath, wifi, tapped water, tank, solar backup"
+    }
+]
