@@ -14,6 +14,7 @@ const locationSql = fs.readFileSync(dirname + 'location.sql').toString();
 const propertySql = fs.readFileSync(dirname + 'property.sql').toString();
 const rentalSql = fs.readFileSync(dirname + 'rental.sql').toString();
 const reviewSql = fs.readFileSync(dirname + 'review.sql').toString();
+const reserveSql = fs.readFileSync(dirname + 'reserve.sql').toString();
 const userSql = fs.readFileSync(dirname + 'user.sql').toString();
 
 const sqlFiles = [
@@ -26,7 +27,8 @@ const sqlFiles = [
     favouriteSql,
     historySql,
     rentalSql,
-    reviewSql
+    reviewSql,
+    reserveSql,
 ];
 
 async function doMigration(file) {

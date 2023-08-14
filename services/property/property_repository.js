@@ -50,6 +50,22 @@ class LocationRepository {
         return result;
     }
 
+    async updateStatus (propertyId, status, expireDate) {
+        const [result] = await db.execute(
+            `
+                UPDATE properties
+                SET status = ?,
+                    status_expire_date = ?
+                WHERE id = ?;
+            `, 
+            [status, expireDate, propertyId]
+        );
+
+        return result;
+    }
+
+    
+
     async findById (propertyId) {
         const [property] = await db.execute(`
             SELECT * FROM properties WHERE id = ?;`, 

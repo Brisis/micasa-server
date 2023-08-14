@@ -14,6 +14,16 @@ rentalRouter.post("/create", async (req, res, next) => {
     }
 });
 
+rentalRouter.delete("/delete/property/:propertyId/user/:userId", async (req, res, next) => {
+    try {
+        const response = await rentalService.deleteRental(req);
+
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
 rentalRouter.get("/", async (req, res, next) => {
     try {
         const response = await rentalService.getRentals();
@@ -33,9 +43,10 @@ rentalRouter.get("/:id", async (req, res, next) => {
     }
 });
 
-rentalRouter.post("/search", async (req, res, next) => {
+rentalRouter.get("/user/:userId", async (req, res, next) => {
     try {
-        const response = await rentalService.getRentalByName(req);
+        const response = await rentalService.getRentalsByUser(req.params.userId);
+        
         res.status(200).send(response);
     } catch (error) {
         next(error);

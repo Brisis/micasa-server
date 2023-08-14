@@ -18,6 +18,7 @@ const favouriteRouter = require("./services/favourite/favourite_routes");
 const historyRouter = require("./services/history/history_routes");
 const leaseRouter = require("./services/lease/lease_routes");
 const morgan = require('morgan');
+const reserveRouter = require("./services/reserve/reserve_routes");
 
 const app = express();
 
@@ -69,6 +70,8 @@ app.use("/billing", billingRouter);
 //rentals
 app.use("/rentals", rentalRouter);
 
+//reserves
+app.use("/reserves", reserveRouter);
 //The 404 Route (ALWAYS Keep this as the last route)
 // app.use('*', (req, res) => {
 //     res.status(404).send("page-not-found");

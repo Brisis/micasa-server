@@ -1,17 +1,26 @@
 const db = require("../../config/db")
 
 class RentalRepository {
-    async create (country, city, name, map_coordinates) {
+    async create (userId, propertyId, expireDate) {
         const [rental] = await db.execute(
             `
-            INSERT INTO rentals (country, city, name, map_coordinates) 
-            VALUES (?, ?, ?, ?)
-            `, [country, city, name, map_coordinates]
+            INSERT INTO rentals (user_id, property_id, expire_date) 
+            VALUES (?, ?, ?)
+            `, [userId, propertyId, expireDate]
         );
 
         const createdRental = await this.findById(rental.insertId)
     
         return createdRental; 
+    }
+
+    async delete (userId, propertyId) {
+        const [rental] = await db.execute(`
+            DELETE FROM rentals WHERE user_id = ? AND property_id = ?;`, 
+            [userId, propertyId]
+        );
+
+        return rental; 
     }
 
     async findById (rentalId) {
@@ -23,10 +32,19 @@ class RentalRepository {
         return rental; 
     }
 
-    async findByName (rentalName) {
+    async findByUserId (userId) {
         const [rental] = await db.execute(`
             SELECT * FROM rentals 
-            WHERE LOWER(name) LIKE LOWER('%${rentalName}%')`
+            WHERE user_id = ?`, [userId]
+        );
+
+        return rental; 
+    }
+
+    async findByProperty (propertyId) {
+        const [rental] = await db.execute(`
+            SELECT * FROM rentals 
+            WHERE property_id = ?`, [propertyId]
         );
 
         return rental; 
