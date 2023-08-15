@@ -101,6 +101,12 @@ class PropertyService {
         let query = searchQuery;
         let location_id;
 
+        if (query == "" || query == undefined) {
+            const properties = await propertyRepository.findAll();
+
+            return properties;
+        }
+
         const dbLocation = await locationRepository.findByName(query);
 
         if (dbLocation.length > 0) {

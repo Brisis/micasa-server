@@ -19,7 +19,7 @@ class AuthenticationService {
         const dbUser = await authRepository.getUserByEmail(email);
 
         if (dbUser.length > 0) {
-            throw new Error("email-in-use");
+            throw new Error("email-already-in-use");
         }
 
         const hashedPassword = await utils.createHashedPassword(password);

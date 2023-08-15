@@ -6,7 +6,7 @@ const errorHandler = (error, req, res, next) => {
         case "email-already-in-use":
             res.status(400).json({ message: error.message });
             break;
-        case "email-or-password-not-incorrect":
+        case "incorrect-email-or-password":
             res.status(400).json({ message: error.message });
             break;
         case "token-not-valid":
