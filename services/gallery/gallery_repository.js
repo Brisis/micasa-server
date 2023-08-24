@@ -14,6 +14,15 @@ class GalleryRepository {
         return createdImage; 
     }
 
+    async delete (imageId) {
+        const [property] = await db.execute(`
+            DELETE FROM gallery WHERE id = ?;`, 
+            [imageId]
+        );
+
+        return property; 
+    }
+
     async findById (imageId) {
         const [image] = await db.execute(`
             SELECT * FROM gallery WHERE id = ?;`, 

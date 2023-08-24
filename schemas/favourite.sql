@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS favourites (
     property_id INT NOT NULL,
     created TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (property_id) REFERENCES properties (id)
+    FOREIGN KEY (property_id) REFERENCES properties (id) ON DELETE CASCADE
 );

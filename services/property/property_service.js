@@ -2,6 +2,7 @@ const ErrorHandler = require("../../utils/errorHandler");
 const PropertyRepository = require("./property_repository");
 const LocationRepository = require("../location/location_repository");
 const GalleryRepository = require("../gallery/gallery_repository");
+const RentalRepository = require("../rentals/rental_repository");
 const Utils = require("../../utils/utils");
 
 
@@ -10,6 +11,7 @@ let errorHandler = new ErrorHandler();
 let propertyRepository = new PropertyRepository();
 let locationRepository = new LocationRepository();
 let galleryRepository = new GalleryRepository();
+let rentalRepository = new RentalRepository();
 
 let utils = new Utils();
 
@@ -45,7 +47,7 @@ class PropertyService {
 
         let location_name = `${dbLocation[0].name}, ${dbLocation[0].city}`;
 
-        const property = await propertyRepository.createProperty(
+        const property = await propertyRepository.create(
             name,
             propertyID,
             locationId,
@@ -59,6 +61,68 @@ class PropertyService {
         );
 
         return property[0];
+    }
+
+    async updateProperty (req) {
+        const {
+            locationId,
+            name,
+            description,
+            amenities,
+            category,
+            price,
+            status,
+            purpose
+        } = req.body;
+
+        let propertyId = req.params.propertyId
+
+        const dbProperty = await propertyRepository.findByPropertyId(propertyId);
+
+        if (dbProperty.length < 1) {
+            throw new Error("property-not-found");
+        }
+
+        const dbLocation = await locationRepository.findById(locationId);
+
+        if (dbLocation.length < 1) {
+            throw new Error("location-not-found");
+        }
+
+        let location_name = `${dbLocation[0].name}, ${dbLocation[0].city}`;
+
+        const property = await propertyRepository.update(
+            name,
+            propertyId,
+            locationId,
+            location_name,
+            description == undefined ? `${category} for ${purpose} in ${dbLocation[0].name}` : description,
+            amenities == undefined ? null : amenities,
+            category,
+            price,
+            status,
+            purpose
+        );
+
+        return property[0];
+    }
+
+    async deleteProperty (propertyId) {
+        const dbProperty = await propertyRepository.findById(propertyId);
+
+        if (dbProperty.length < 1) {
+            throw new Error("property-not-found");
+        }
+
+        const dbRental = await rentalRepository.findByProperty(propertyId);
+
+        if (dbRental.length > 0) {
+            throw new Error("property-occupied");
+        }
+
+        await propertyRepository.delete(propertyId);
+
+        return {message: "deleted"};
     }
 
     async setCoverImage (propertyId, imageId) {
@@ -110,14 +174,20 @@ class PropertyService {
         const dbLocation = await locationRepository.findByName(query);
 
         if (dbLocation.length > 0) {
-           location_id = dbLocation[0].id;
+            let myprops = [];
+            for (let i = 0; i < dbLocation.length; i++) {
+                const location = dbLocation[i];
+                const properties = await propertyRepository.findByLocation(location.id);
+                for (let j = 0; j < properties.length; j++) {
+                    const prop = properties[j];
+                    myprops.push(prop);
+                }   
+            }
+
+            return myprops;
         }
-
-        if (location_id != undefined) {
-            const properties = await propertyRepository.findByLocation(location_id);
-
-            return properties;
-        } else {
+        
+        else {
             const properties = await propertyRepository.findByName(query);
 
             return properties;

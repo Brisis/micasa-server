@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS leases (
     businessAddress TEXT NOT NULL,
     phoneNumber VARCHAR(20) NOT NULL,
     currentHomeAddress TEXT NOT NULL,
-    homePhoneNumber VARCHAR(20) NOT NULL,
     familySize INT NOT NULL,
     nextOfKin VARCHAR(255) NOT NULL,
     nextOfKinPhoneNumber VARCHAR(20) NOT NULL,

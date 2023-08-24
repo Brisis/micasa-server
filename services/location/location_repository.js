@@ -26,7 +26,10 @@ class LocationRepository {
     async findByName (locationName) {
         const [location] = await db.execute(`
             SELECT * FROM locations 
-            WHERE LOWER(name) LIKE LOWER('%${locationName}%')`
+            WHERE LOWER(name) LIKE LOWER('%${locationName}%')
+            OR LOWER(city) LIKE LOWER('%${locationName}%')
+            OR LOWER(country) LIKE LOWER('%${locationName}%')
+        `    
         );
 
         return location; 

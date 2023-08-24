@@ -12,7 +12,6 @@ class LeaseRepository {
         businessAddress,
         phoneNumber,
         currentHomeAddress,
-        homePhoneNumber,
         familySize,
         nextOfKin,
         nextOfKinPhoneNumber,
@@ -32,14 +31,13 @@ class LeaseRepository {
                 businessAddress,
                 phoneNumber,
                 currentHomeAddress,
-                homePhoneNumber,
                 familySize,
                 nextOfKin,
                 nextOfKinPhoneNumber,
                 nextOfKinAddress,
                 signature
                 ) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `, [
                 userId,
                 nationalId,
@@ -51,7 +49,6 @@ class LeaseRepository {
                 businessAddress,
                 phoneNumber,
                 currentHomeAddress,
-                homePhoneNumber,
                 familySize,
                 nextOfKin,
                 nextOfKinPhoneNumber,
@@ -73,7 +70,6 @@ class LeaseRepository {
         salary,
         businessAddress,
         currentHomeAddress,
-        homePhoneNumber,
         familySize,
         nextOfKin,
         nextOfKinPhoneNumber,
@@ -88,7 +84,6 @@ class LeaseRepository {
                     salary = ?,
                     businessAddress = ?,
                     currentHomeAddress = ?,
-                    homePhoneNumber = ?,
                     familySize = ?,
                     nextOfKin = ?,
                     nextOfKinPhoneNumber = ?,
@@ -101,7 +96,6 @@ class LeaseRepository {
                 salary,
                 businessAddress,
                 currentHomeAddress,
-                homePhoneNumber,
                 familySize,
                 nextOfKin,
                 nextOfKinPhoneNumber,

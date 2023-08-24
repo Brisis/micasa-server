@@ -17,6 +17,28 @@ galleryRouter.post("/create/property/:id", utils.uploadMiddleware().single('imag
     }
 });
 
+galleryRouter.delete("/delete/:galleryId/property/:propertyId", async (req, res, next) => {
+    try {
+
+        const response = await galleryService.deleteSingle(req);
+
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+galleryRouter.delete("/delete/property/:propertyId", async (req, res, next) => {
+    try {
+
+        const response = await galleryService.deleteBulk(req);
+
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
 galleryRouter.get("/", async (req, res, next) => {
     try {
         const response = await galleryService.getImages();

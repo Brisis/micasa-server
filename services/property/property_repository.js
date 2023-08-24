@@ -1,7 +1,7 @@
 const db = require("../../config/db")
 
 class LocationRepository {
-    async createProperty (
+    async create (
         name,
         propertyID,
         locationId,
@@ -35,6 +35,49 @@ class LocationRepository {
 
     
         return createdProperty; 
+    }
+
+    async update (
+        name,
+        propertyId,
+        locationId,
+        location_name,
+        description,
+        amenities,
+        category,
+        price,
+        status,
+        purpose
+        ) {
+        const [property] = await db.execute(
+            `
+            UPDATE leases
+            SET name = ?,  
+                location_id = ?,
+                location_name = ?,
+                description = ?,
+                amenities = ?,
+                category = ?,
+                price = ?,
+                status = ?,
+                purpose = ?
+            WHERE id = ${propertyId};
+            `, [name, locationId, location_name, description, amenities, category, price, status, purpose]
+        );
+
+        const updatedProperty = await this.findById(propertyId);
+
+    
+        return updatedProperty; 
+    }
+
+    async delete (propertyId) {
+        const [property] = await db.execute(`
+            DELETE FROM properties WHERE id = ?;`, 
+            [propertyId]
+        );
+
+        return property; 
     }
 
     async updateCoverImage (propertyId, imageUrl) {

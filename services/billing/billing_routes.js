@@ -14,7 +14,37 @@ billingRouter.post("/create/:userId", async (req, res, next) => {
     }
 });
 
-billingRouter.put("/:leaseId/update", async (req, res, next) => {
+billingRouter.put("/:billingId/update", async (req, res, next) => {
+    try {
+        const response = await billingService.updateBilling(req);
+
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+billingRouter.put("/:billingId/pay", async (req, res, next) => {
+    try {
+        const response = await billingService.updateBillingPay(req);
+
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+billingRouter.put("/:billingId/unpay", async (req, res, next) => {
+    try {
+        const response = await billingService.updateBillingUnPay(req);
+
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+billingRouter.delete("/:leaseId/pay", async (req, res, next) => {
     try {
         const response = await billingService.registerBilling(req);
 

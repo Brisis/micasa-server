@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS reviews (
     comment TEXT NOT NULL,
     created TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (property_id) REFERENCES properties (id)
+    FOREIGN KEY (property_id) REFERENCES properties (id) ON DELETE CASCADE
 );

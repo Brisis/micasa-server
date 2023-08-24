@@ -13,12 +13,11 @@ class BillingService {
     async registerBilling (req) {
         // const validateRequest = errorHandler.handleBillingErrors(req);
 
-        const {balance, expireDate} = req.body;
+        const {balance} = req.body;
         let userId = req.params.userId;
 
         if (
             balance == undefined || 
-            expireDate == undefined || 
             userId == undefined
         ) {
             throw new Error("missing-fields-required");
@@ -36,31 +35,102 @@ class BillingService {
             throw new Error("billing-already-registered"); 
         }
 
+        let status = "UnPaid";
+
         const billing = await billingRepository.create(
             userId, 
             balance, 
-            expireDate
+            status
         );
 
         return billing[0];
     }
 
     async updateBilling (req) {
-        const validateRequest = errorHandler.handleBillingUpdateErrors(req);
+        //const validateRequest = errorHandler.handleBillingUpdateErrors(req);
 
-        const {balance, expireDate} = req.body;
-        let leaseId = req.params.leaseId;
+        const {balance} = req.body;
+        let billingId = req.params.billingId;
 
-        const dbBilling = await billingRepository.findById(leaseId);
+        if (
+            balance == undefined || 
+            billingId == undefined
+        ) {
+            throw new Error("missing-fields-required");
+        }
+
+        const dbBilling = await billingRepository.findById(billingId);
 
         if (dbBilling.length < 1) {
             throw new Error("billing-not-found"); 
         }
 
+        let status = "UnPaid";
+
         const billing = await billingRepository.update(
-            leaseId, 
+            billingId, 
             balance, 
+            status
+        );
+
+        return billing[0];
+    }
+
+    async updateBillingPay (req) {
+        let billingId = req.params.billingId;
+
+        if (
+            billingId == undefined
+        ) {
+            throw new Error("missing-fields-required");
+        }
+
+        const dbBilling = await billingRepository.findById(billingId);
+
+        if (dbBilling.length < 1) {
+            throw new Error("billing-not-found"); 
+        }
+
+
+        let date = new Date();
+        date.setMonth(date.getMonth() + 1);
+
+        const offset = date.getTimezoneOffset()
+        date = new Date(date.getTime() - (offset*60*1000))
+        let expireDate =  date.toISOString().split('T')[0]
+
+        let status = "Paid";
+
+        const billing = await billingRepository.updatePaid(
+            billingId, 
+            status,
             expireDate
+        );
+
+        return billing[0];
+    }
+
+    async updateBillingUnPay (req) {
+        let billingId = req.params.billingId;
+
+        if (
+            billingId == undefined
+        ) {
+            throw new Error("missing-fields-required");
+        }
+
+        const dbBilling = await billingRepository.findById(billingId);
+
+        if (dbBilling.length < 1) {
+            throw new Error("billing-not-found"); 
+        }
+
+        let status = "UnPaid";
+
+        const billing = await billingRepository.updateUnPaid(
+            billingId, 
+            status,
+            null
         );
 
         return billing[0];

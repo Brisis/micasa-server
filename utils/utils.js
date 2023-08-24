@@ -93,6 +93,14 @@ class Utils {
            .toFile(`./uploads/thumbnails/${req.file.filename}`);
     }
 
+    async deleteFile (fileName) {
+      const directoryPath = path.join(__dirname, '../uploads/');
+      const directoryThumbnailsPath = path.join(__dirname, '../uploads/thumbnails/');
+
+      await fs.promises.unlink(path.join(directoryPath, fileName))
+      await fs.promises.unlink(path.join(directoryThumbnailsPath, fileName))    
+    };
+
 }
 
 module.exports = Utils;

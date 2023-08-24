@@ -108,8 +108,7 @@ class ErrorHandler {
             businessAddress,
             phoneNumber,
             currentHomeAddress,
-            homePhoneNumber,
-            familySize,
+             familySize,
             nextOfKin,
             nextOfKinPhoneNumber,
             nextOfKinAddress,
@@ -157,10 +156,7 @@ class ErrorHandler {
         if (!currentHomeAddress) {
             errors.push("currentHomeAddress is required");
         }
-
-        if (!homePhoneNumber) {
-            errors.push("home Phone Number is required");
-        }
+  
 
         if (!familySize) {
             errors.push("familySize is required");
@@ -196,8 +192,7 @@ class ErrorHandler {
             salary,
             businessAddress,
             currentHomeAddress,
-            homePhoneNumber,
-            familySize,
+             familySize,
             nextOfKin,
             nextOfKinPhoneNumber,
             nextOfKinAddress,
@@ -228,11 +223,7 @@ class ErrorHandler {
         if (!currentHomeAddress) {
             errors.push("currentHomeAddress is required");
         }
-
-        if (!homePhoneNumber) {
-            errors.push("home Phone Number is required");
-        }
-
+ 
         if (!familySize) {
             errors.push("familySize is required");
         }

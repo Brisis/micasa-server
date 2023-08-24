@@ -70,7 +70,7 @@ class ReserveService {
         const dbReserve = await reserveRepository.findByPropertyAndUser(userId, propertyId);
         
         if (dbReserve.length > 0) {
-            return {message: "You are not allowed to reserve this property at this moment"};
+            return {message: "Sorry, you are not allowed to reserve this property at this moment"};
         }
 
         const dbBilling = await billingRepository.findByUserId(userId);

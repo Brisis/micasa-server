@@ -14,6 +14,26 @@ propertyRouter.post("/create", async (req, res, next) => {
     }
 });
 
+propertyRouter.put("/:propertyId/update", async (req, res, next) => {
+    try {
+        const response = await propertyService.updateProperty(req);
+        
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
+propertyRouter.delete("/:propertyId/delete", async (req, res, next) => {
+    try {
+        const response = await propertyService.deleteProperty(req.params.propertyId);
+        
+        res.status(200).send(response);
+    } catch (error) {
+        next(error);
+    }
+});
+
 propertyRouter.get("/", async (req, res, next) => {
     try {
 

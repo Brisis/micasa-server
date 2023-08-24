@@ -1,12 +1,12 @@
 const db = require("../../config/db")
 
 class BillingRepository {
-    async create (userId, balance, expireDate) {
+    async create (userId, balance, status) {
         const [billing] = await db.execute(
             `
-            INSERT INTO billing (user_id, balance, expire_date) 
+            INSERT INTO billing (user_id, balance, status) 
             VALUES (?, ?, ?)
-            `, [userId, balance, expireDate]
+            `, [userId, balance, status]
         );
 
         const createdBilling = await this.findById(billing.insertId)
@@ -14,20 +14,52 @@ class BillingRepository {
         return createdBilling; 
     }
 
-    async update (leaseId, balance, expireDate) {
+    async update (billingId, balance, status) {
         const [billing] = await db.execute(
             `
-            UPDATE leases
+            UPDATE billing
             SET balance = ?,
-                expire_date = ?
-            WHERE id = ${leaseId};
-            `, [balance, expireDate]
+                status = ?
+            WHERE id = ${billingId};
+            `, [balance, status]
         );
 
-        const updatedBilling = await this.findById(leaseId)
+        const updatedBilling = await this.findById(billingId)
     
         return updatedBilling; 
     }
+
+    async updatePaid (billingId, status, expireDate) {
+        const [billing] = await db.execute(
+            `
+            UPDATE billing
+            SET status = ?,
+                expire_date = ?
+            WHERE id = ${billingId};
+            `, [status, expireDate]
+        );
+
+        const updatedBilling = await this.findById(billingId)
+    
+        return updatedBilling; 
+    }
+
+    async updateUnPaid (billingId, status, expireDate) {
+        const [billing] = await db.execute(
+            `
+            UPDATE billing
+            SET status = ?,
+                expire_date = ?
+            WHERE id = ${billingId};
+            `, [status, expireDate]
+        );
+
+        const updatedBilling = await this.findById(billingId)
+    
+        return updatedBilling; 
+    }
+
+    
 
     async findById (billingId) {
         const [billing] = await db.execute(`
