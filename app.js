@@ -37,6 +37,10 @@ app.use("/uploads", express.static(path.join(__dirname, './uploads')));
 
 /* Routes */
 
+app.get('/', (req, res) => {
+    res.send('Welcome to Micasa Listings!')
+});
+
 //auth
 app.use("/auth", authenticationRouter);
 
