@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS properties (
     purpose VARCHAR(35) NOT NULL,
     average_rating DOUBLE PRECISION DEFAULT 0.00,
     status_expire_date VARCHAR(30) DEFAULT NULL,
-    created DATE NOT NULL DEFAULT NOW(),
+    created TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY (location_id) REFERENCES locations (id)
 );
