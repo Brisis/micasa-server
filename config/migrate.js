@@ -3,7 +3,7 @@ const path = require("path");
 const db = require("../config/db");
 
 // read sql files
-const dirname = path.resolve() + "\\schemas\\";
+const dirname = path.join(__dirname, '../schemas/');
 
 const billingSql = fs.readFileSync(dirname + 'billing.sql').toString();
 const favouriteSql = fs.readFileSync(dirname + 'favourite.sql').toString();
