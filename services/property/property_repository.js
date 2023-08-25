@@ -51,7 +51,7 @@ class LocationRepository {
         ) {
         const [property] = await db.execute(
             `
-            UPDATE leases
+            UPDATE properties
             SET name = ?,  
                 location_id = ?,
                 location_name = ?,

@@ -70,14 +70,17 @@ class ReserveService {
         const dbReserve = await reserveRepository.findByPropertyAndUser(userId, propertyId);
         
         if (dbReserve.length > 0) {
-            return {message: "Sorry, you are not allowed to reserve this property at this moment"};
+            return {message: "Sorry, you are not allowed to reserve viewing for this property until your previous reserve expires"};
         }
 
         const dbBilling = await billingRepository.findByUserId(userId);
 
         if (dbBilling.length < 1) {
-            return {message: "Please pay your Account to Continue"};
+            return {message: "Please add billing to your Account to Continue"};
         }
+        else if (dbBilling[0].status != "Paid") {
+            return {message: "Please pay your Account to Continue"};
+        } 
 
 
         return {message: "allowed"};

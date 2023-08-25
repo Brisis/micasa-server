@@ -62,8 +62,7 @@ class GalleryService {
         return {message: "File is deleted."}
     }
 
-    async deleteBulk (req) {
-        const {propertyId} = req.params;
+    async deleteBulk (propertyId) {
         
         const dbProperty = await propertyRepository.findById(propertyId);
 

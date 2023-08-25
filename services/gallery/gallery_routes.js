@@ -31,7 +31,7 @@ galleryRouter.delete("/delete/:galleryId/property/:propertyId", async (req, res,
 galleryRouter.delete("/delete/property/:propertyId", async (req, res, next) => {
     try {
 
-        const response = await galleryService.deleteBulk(req);
+        const response = await galleryService.deleteBulk(req.params.propertyId);
 
         res.status(200).send(response);
     } catch (error) {

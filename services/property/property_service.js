@@ -3,6 +3,8 @@ const PropertyRepository = require("./property_repository");
 const LocationRepository = require("../location/location_repository");
 const GalleryRepository = require("../gallery/gallery_repository");
 const RentalRepository = require("../rentals/rental_repository");
+
+const GalleryService = require("../gallery/gallery_service");
 const Utils = require("../../utils/utils");
 
 
@@ -13,6 +15,7 @@ let locationRepository = new LocationRepository();
 let galleryRepository = new GalleryRepository();
 let rentalRepository = new RentalRepository();
 
+let galleryService = new GalleryService();
 let utils = new Utils();
 
 class PropertyService {
@@ -119,6 +122,8 @@ class PropertyService {
         if (dbRental.length > 0) {
             throw new Error("property-occupied");
         }
+
+        await galleryService.deleteBulk(propertyId);
 
         await propertyRepository.delete(propertyId);
 
